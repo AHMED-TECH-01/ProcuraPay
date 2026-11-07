@@ -1,0 +1,6 @@
+{
+  "name": "ProcuraPay AI",
+  "description": "Autonomous Procurement. Human-Controlled Payments. AI-powered B2B procurement and payment intelligence SaaS.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

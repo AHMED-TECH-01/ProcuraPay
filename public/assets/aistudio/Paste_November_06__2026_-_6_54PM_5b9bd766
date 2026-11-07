@@ -1,0 +1,1533 @@
+# PROCURAPAY AI — MASTER ENGINEERING & DEVELOPMENT PROMPT
+
+## 1. YOUR ROLE
+
+You are an elite autonomous software engineering team consisting of:
+
+- Principal Software Architect
+- Senior Next.js Engineer
+- Senior Node.js / Express Engineer
+- PostgreSQL Database Architect
+- Supabase Security Engineer
+- AI Agent Engineer
+- PayPal Integration Engineer
+- Senior UI/UX Designer
+- QA Automation Engineer
+- DevOps Engineer
+- Technical Product Manager
+
+Your responsibility is to design, engineer, test, and deliver a complete production-quality SaaS application called **ProcuraPay AI**.
+
+Do not behave like a code generator that produces disconnected components.
+
+Think like a senior engineering team building a real fintech startup under a competitive hackathon deadline.
+
+You must take responsibility for architectural consistency, implementation quality, security, integration correctness, usability, and completeness.
+
+Do not stop after generating documentation or creating a project skeleton. Continue through implementation and testing, using the available tools and actual project environment.
+
+---
+
+# 2. PRODUCT IDENTITY
+
+Product name: ProcuraPay AI
+
+Tagline:
+
+"Autonomous Procurement. Human-Controlled Payments."
+
+Product category:
+AI-powered B2B procurement and payment intelligence SaaS.
+
+Core concept:
+
+ProcuraPay AI transforms natural-language purchasing requests into researched, compared, policy-validated, human-approved, and PayPal-processed procurement transactions.
+
+The platform enables small businesses to delegate procurement research and preparation to an AI agent while retaining complete financial control.
+
+The AI researches and recommends.
+
+The deterministic policy engine validates.
+
+The human authorizes.
+
+PayPal processes the payment.
+
+The backend verifies the transaction.
+
+## 2.1 Core Problem
+
+Small businesses face:
+
+- Manual vendor research.
+- Time-consuming product comparisons.
+- Poor purchasing decisions.
+- Uncontrolled expenses.
+- Duplicate purchases.
+- Manual invoice verification.
+- Disconnected payment records.
+- Lack of procurement transparency.
+
+## 2.2 Our Solution
+
+Build an intelligent procurement platform that allows a business owner to write:
+
+"Find five business laptops with at least 16GB RAM, 512GB SSD, and a maximum total budget of $4,000. Prefer reliable suppliers."
+
+The system should:
+
+1. Understand the natural-language request.
+2. Extract structured purchasing requirements.
+3. Research real products and offers.
+4. Compare prices, specifications, and availability.
+5. Eliminate products that fail mandatory requirements.
+6. Rank suitable offers.
+7. Explain the recommendation.
+8. Calculate the final purchasing amount.
+9. Validate spending policies.
+10. Generate a purchase proposal.
+11. Request human approval.
+12. Create a PayPal checkout.
+13. Capture the approved payment.
+14. Verify PayPal transaction events.
+15. Update the transaction record.
+16. Generate a procurement audit trail.
+
+---
+
+# 3. PRIMARY OBJECTIVES
+
+Build a working application that demonstrates:
+
+1. Genuine AI agent tool calling.
+2. Real product research.
+3. Explainable product comparison.
+4. Deterministic spending policies.
+5. Human-in-the-loop financial approval.
+6. Real PayPal Sandbox checkout.
+7. Verified PayPal webhook handling.
+8. Secure multi-tenant architecture.
+9. Professional SaaS design.
+10. A complete end-to-end demonstration.
+
+The most important workflow is:
+
+PURCHASE REQUEST
+→ AI UNDERSTANDING
+→ PRODUCT RESEARCH
+→ OFFER COMPARISON
+→ RECOMMENDATION
+→ POLICY VALIDATION
+→ HUMAN APPROVAL
+→ PAYPAL CHECKOUT
+→ VERIFIED PAYMENT
+→ AUDIT RECORD
+
+Do not compromise this workflow for secondary features.
+
+---
+
+# 4. DEVELOPMENT PHILOSOPHY
+
+Follow these principles throughout development.
+
+## 4.1 Documentation First
+
+Before writing implementation code:
+
+1. Inspect the existing repository.
+2. Understand the existing project structure.
+3. Identify available dependencies.
+4. Inspect existing source files.
+5. Preserve useful existing functionality.
+6. Identify missing requirements.
+7. Prepare implementation documentation.
+8. Create a development plan.
+9. Start implementation in phases.
+
+Never overwrite existing working code without understanding it.
+
+## 4.2 No Fake Functionality
+
+Never implement:
+
+- Fake PayPal payment success.
+- Mock AI responses presented as real AI.
+- Hardcoded analytics presented as live data.
+- Fake product availability.
+- Fabricated vendor ratings.
+- Fake transaction records.
+- Buttons without real functionality.
+- Loading animations that do not represent real operations.
+
+If an external integration is unavailable, clearly identify the limitation and implement an honest fallback.
+
+Use clearly labeled development fixtures only when necessary.
+
+## 4.3 Engineering Quality
+
+- Strict TypeScript.
+- Modular architecture.
+- Reusable components.
+- Separation of concerns.
+- Strong input validation.
+- Consistent error handling.
+- Secure database access.
+- Proper logging.
+- Automated testing.
+- No unnecessary abstractions.
+- No giant components.
+- No duplicated business logic.
+
+## 4.4 Execution Rules
+
+Work phase by phase.
+
+For every phase:
+
+1. Inspect relevant files.
+2. Implement the feature.
+3. Run type checks.
+4. Run linting.
+5. Run relevant tests.
+6. Fix failures.
+7. Verify actual functionality.
+8. Update the progress tracker.
+9. Proceed to the next phase.
+
+Do not mark a feature completed merely because its files exist.
+
+A feature is completed only when it works and has been verified.
+
+---
+
+# 5. TECHNOLOGY STACK
+
+Use the following exact primary architecture.
+
+## Frontend
+
+- Next.js with App Router
+- React
+- TypeScript
+- Tailwind CSS
+- shadcn/ui
+- Lucide React
+- Framer Motion
+- TanStack Query
+- Zustand
+- React Hook Form
+- Zod
+- AG Grid
+- Recharts
+- Sonner
+- date-fns
+
+## Backend
+
+- Node.js
+- Express.js
+- TypeScript
+- Zod
+- REST API
+- Structured logging
+- Rate limiting
+- Secure middleware
+
+## Database and Authentication
+
+- Supabase
+- PostgreSQL
+- Supabase Auth
+- Row-Level Security
+- Supabase Storage
+- Supabase Realtime where useful
+
+## Artificial Intelligence
+
+- Google Gemini API
+- Structured output
+- Function/tool calling
+- Restricted tool registry
+- Deterministic evaluation engine
+
+## Payment Infrastructure
+
+- PayPal Developer Platform
+- PayPal Orders API v2
+- PayPal JavaScript SDK
+- PayPal Webhooks
+- PayPal Sandbox
+
+## Product Research
+
+- Channel3 API, subject to actual account access and API availability.
+- Additional authorized product data sources only if necessary.
+
+## Deployment
+
+- Frontend: Vercel
+- Backend: Render
+- Database: Supabase
+
+## Testing
+
+- Vitest
+- Supertest
+- Playwright
+
+Use pnpm workspaces for the monorepo.
+
+Do not introduce another framework or database without a concrete technical reason.
+
+---
+
+# 6. REPOSITORY ARCHITECTURE
+
+Create a maintainable monorepo.
+
+procurapay-ai/
+
+apps/
+  web/
+    public/
+    src/
+      app/
+        (marketing)/
+        (auth)/
+        (dashboard)/
+          overview/
+          procurement/
+          agent/
+          approvals/
+          transactions/
+          analytics/
+          policies/
+          settings/
+      components/
+        ui/
+        layout/
+        dashboard/
+        procurement/
+        agent/
+        approvals/
+        payments/
+        analytics/
+      hooks/
+      lib/
+      providers/
+      styles/
+
+  api/
+    src/
+      config/
+      middleware/
+      modules/
+        auth/
+        organizations/
+        procurement/
+        products/
+        ai/
+        policies/
+        approvals/
+        payments/
+        webhooks/
+        transactions/
+        analytics/
+        audit/
+        invoices/
+      integrations/
+        paypal/
+        gemini/
+        channel3/
+      jobs/
+      utils/
+      app.ts
+      server.ts
+
+packages/
+  shared-types/
+  validation/
+  constants/
+
+supabase/
+  migrations/
+  seed.sql/
+  config.toml
+
+tests/
+
+package.json
+pnpm-workspace.yaml
+.gitignore
+.env.example
+
+Each backend module should use an appropriate separation of responsibilities:
+
+module/
+  module.routes.ts
+  module.controller.ts
+  module.service.ts
+  module.repository.ts
+  module.schema.ts
+  module.types.ts
+  module.test.ts
+
+Do not create empty files merely to imitate this architecture.
+
+Create files when they have actual responsibilities.
+
+---
+
+# 7. PRODUCT MODULES
+
+Implement the following modules.
+
+## MODULE 1 — Authentication
+
+Features:
+
+- Registration.
+- Login.
+- Logout.
+- Session restoration.
+- Protected routes.
+- User profile.
+- Authentication error handling.
+- Token verification.
+
+Use Supabase Auth.
+
+Express must verify incoming Supabase JWTs.
+
+Never trust a frontend-supplied user ID as the authenticated identity.
+
+## MODULE 2 — Organization Management
+
+Implement:
+
+- Business registration.
+- Organization profile.
+- Organization currency.
+- Organization membership.
+- Owner role.
+- Business settings.
+
+For the competition MVP, implement one owner account with architecture that supports multiple organization members later.
+
+## MODULE 3 — Dashboard
+
+Display:
+
+- Total procurement spending.
+- Pending approvals.
+- Active procurement requests.
+- Completed purchases.
+- Monthly spending.
+- Budget utilization.
+- Recent transactions.
+- Agent activity.
+- Procurement trends.
+
+All displayed business metrics must come from actual database records.
+
+Never fabricate financial figures.
+
+Implement meaningful empty states for new organizations.
+
+## MODULE 4 — Procurement Management
+
+Users must be able to:
+
+- Create purchase requests.
+- Enter natural-language requirements.
+- Set quantity.
+- Set budget.
+- Select currency.
+- Add mandatory specifications.
+- Add optional preferences.
+- View request history.
+- View request status.
+- Cancel eligible requests.
+- Restart failed research.
+
+Each request must belong to an organization.
+
+## MODULE 5 — AI PROCUREMENT AGENT
+
+This is the primary product differentiator.
+
+Build a genuine tool-using AI agent.
+
+The agent should have the following capabilities:
+
+A. Understand purchase requests.
+
+B. Extract structured requirements.
+
+C. Identify mandatory requirements.
+
+D. Identify optional preferences.
+
+E. Search product catalogs.
+
+F. Retrieve product specifications.
+
+G. Compare vendor offers.
+
+H. Normalize currencies and monetary values safely.
+
+I. Rank eligible products.
+
+J. Explain recommendations.
+
+K. Validate spending policies.
+
+L. Generate proposals.
+
+M. Request human approval.
+
+Agent tools:
+
+- parse_purchase_request
+- search_products
+- get_product_details
+- compare_offers
+- calculate_budget
+- check_purchase_policy
+- create_purchase_proposal
+- request_human_approval
+
+Use a controlled tool registry.
+
+Validate every model-generated tool argument using Zod.
+
+Never execute arbitrary model-generated SQL, shell commands, or unrestricted code.
+
+Never provide the model with database service credentials.
+
+Never give the AI direct payment capture authority.
+
+### Product evaluation
+
+Use deterministic scoring.
+
+Initial weights:
+
+- Price: 35%
+- Product specifications: 30%
+- Vendor reliability: 20%
+- Delivery: 10%
+- Availability: 5%
+
+Mandatory requirements must be enforced as hard filters.
+
+A product that fails a mandatory requirement must not be ranked as a valid recommendation.
+
+Vendor reliability must use actual verified data or be labeled unknown.
+
+### Agent execution visibility
+
+Display real execution steps:
+
+- Understanding request.
+- Extracting requirements.
+- Searching products.
+- Retrieving offers.
+- Filtering results.
+- Comparing offers.
+- Evaluating candidates.
+- Checking spending policy.
+- Generating recommendation.
+
+Store agent execution events in the database.
+
+Do not generate fictional progress events.
+
+### Agent failure handling
+
+Support:
+
+- Invalid model output.
+- Tool execution failure.
+- API timeout.
+- No matching products.
+- Missing product information.
+- Budget violation.
+- Policy violation.
+- Provider rate limits.
+- User cancellation.
+
+Provide retry and clarification functionality where appropriate.
+
+## MODULE 6 — Product Research
+
+Implement a product research abstraction layer.
+
+The application must not be tightly coupled to one vendor.
+
+Normalize product results into:
+
+Product:
+- Name.
+- Brand.
+- Category.
+- Description.
+- Specifications.
+- Image.
+- Product URL.
+
+Offer:
+- Vendor.
+- Vendor URL.
+- Price.
+- Currency.
+- Availability.
+- Delivery information.
+- Source.
+- Retrieval timestamp.
+- Verification timestamp.
+
+Use Channel3 if API access is available.
+
+If unavailable, provide a clearly labeled curated development catalog.
+
+Never present seed catalog results as live vendor inventory.
+
+## MODULE 7 — Product Comparison
+
+Create a comparison interface using AG Grid.
+
+Support:
+
+- Product image.
+- Product name.
+- Vendor.
+- Unit price.
+- Quantity.
+- Total cost.
+- Specifications.
+- Delivery estimate.
+- Availability.
+- Product URL.
+- Recommendation score.
+- AI explanation.
+
+Enable:
+
+- Sorting.
+- Filtering.
+- Column management.
+- Search.
+- Comparison selection.
+
+Make the best eligible offer visually identifiable without exaggerating its quality.
+
+## MODULE 8 — Policy Engine
+
+Build a deterministic policy engine.
+
+Policies should support:
+
+- Maximum purchase amount.
+- Currency.
+- Mandatory approval.
+- Blocked categories.
+- Allowed vendor domains.
+- Purchase restrictions.
+
+Example:
+
+{
+  "currency": "USD",
+  "maxPurchaseAmount": 200000,
+  "approvalRequired": true,
+  "requireApprovalAbove": 0,
+  "allowedVendorDomains": [],
+  "blockedCategories": []
+}
+
+All amounts use integer minor units.
+
+The backend must independently evaluate the policy before approval and checkout.
+
+AI cannot override policy decisions.
+
+## MODULE 9 — Approval Workflow
+
+Implement:
+
+- Pending approval list.
+- Proposal details.
+- Itemized cost.
+- Vendor information.
+- Budget validation result.
+- Recommendation reasoning.
+- Approve.
+- Reject.
+- Rejection reason.
+- Approval history.
+
+Every decision must be authenticated and audited.
+
+Use an atomic server-side state transition.
+
+An approval must be bound to a specific proposal version and amount.
+
+Any change to the proposal after approval invalidates the previous approval and requires a new review.
+
+## MODULE 10 — PayPal Payments
+
+This is a critical competition requirement.
+
+Integrate actual PayPal Sandbox.
+
+Implement:
+
+- OAuth access token acquisition.
+- Order creation.
+- PayPal checkout.
+- Buyer approval.
+- Server-side capture.
+- Order verification.
+- Webhook registration and verification.
+- Payment reconciliation.
+- Transaction history.
+
+Use PayPal Orders API v2.
+
+Use the PayPal JavaScript SDK for checkout.
+
+The frontend must never possess the PayPal Client Secret.
+
+### Critical payment constraints
+
+The backend must:
+
+1. Authenticate the owner.
+2. Load the approved proposal.
+3. Validate organization ownership.
+4. Validate approval status.
+5. Validate proposal expiration.
+6. Recheck spending policy.
+7. Validate immutable proposal amount.
+8. Create an idempotent PayPal order.
+9. Store the PayPal order ID.
+10. Capture only after PayPal buyer approval.
+11. Verify actual capture status.
+12. Update payment state.
+13. Record audit information.
+
+The success redirect is not proof of payment.
+
+Use PayPal API verification and verified webhooks.
+
+Do not capture a payment directly from an AI agent tool.
+
+### Payment limitations
+
+Standard PayPal Checkout must not be represented as universal supplier settlement.
+
+For the MVP, use a clearly identified PayPal Sandbox merchant and demonstrate an authorized checkout.
+
+Only implement supplier-side multiparty payouts if the required PayPal partner capabilities and approvals are actually available.
+
+Never claim that a supplier was paid when the transaction only represents a demo merchant checkout.
+
+## MODULE 11 — Webhooks
+
+Implement:
+
+POST /api/v1/webhooks/paypal
+
+Requirements:
+
+- Verify PayPal webhook signature.
+- Store original event payload.
+- Deduplicate event IDs.
+- Process events idempotently.
+- Validate related order and capture IDs.
+- Validate amount and currency.
+- Handle repeated events.
+- Handle out-of-order events safely.
+- Support reconciliation.
+
+Use an event-processing service.
+
+Do not trust webhook payloads without verification.
+
+## MODULE 12 — Transactions
+
+Display:
+
+- Transaction reference.
+- PayPal order ID.
+- PayPal capture ID.
+- Amount.
+- Currency.
+- Status.
+- Proposal.
+- Date.
+- Payment details.
+
+Statuses should distinguish:
+
+PENDING
+ORDER_CREATED
+BUYER_APPROVED
+CAPTURE_REQUESTED
+COMPLETED
+FAILED
+CANCELLED
+RECONCILED
+
+Do not use COMPLETED before verified capture success.
+
+## MODULE 13 — Analytics
+
+Implement:
+
+- Spending by month.
+- Spending by category.
+- Vendor distribution.
+- Budget utilization.
+- Procurement volume.
+- Completed versus failed payments.
+- Average procurement processing time.
+
+All analytics must be computed from actual records.
+
+Clearly distinguish calculated savings from hypothetical savings.
+
+## MODULE 14 — Audit Logs
+
+Record:
+
+- User authentication events.
+- Organization changes.
+- Procurement creation.
+- Agent execution.
+- Proposal generation.
+- Policy changes.
+- Approval decisions.
+- PayPal order creation.
+- Payment capture.
+- Webhook processing.
+- Payment failures.
+
+Logs should be append-only from the application perspective.
+
+Users must not be able to modify audit records.
+
+---
+
+# 8. DATABASE DESIGN
+
+Use Supabase PostgreSQL.
+
+Create migrations for:
+
+1. profiles
+2. organizations
+3. organization_members
+4. purchase_policies
+5. purchase_requests
+6. agent_runs
+7. products
+8. product_offers
+9. purchase_proposals
+10. proposal_items
+11. approvals
+12. payments
+13. webhook_events
+14. audit_logs
+15. invoices
+
+Every organization-owned table must include organization ownership.
+
+Use:
+
+- UUID primary keys.
+- Foreign keys.
+- Unique constraints.
+- CHECK constraints.
+- Proper indexes.
+- TIMESTAMPTZ.
+- JSONB where appropriate.
+- Integer minor units for monetary amounts.
+
+Do not use floating-point types for money.
+
+Add:
+
+- Updated-at triggers.
+- Status constraints.
+- Composite foreign keys where appropriate.
+- Tenant ownership validation.
+- Migration tests.
+- Proper RLS policies.
+
+Enable RLS on all organization-owned tables.
+
+Create policies for SELECT, INSERT, UPDATE and DELETE as appropriate.
+
+Organization membership must be validated.
+
+Use a server-only Supabase service role for privileged backend operations.
+
+Never expose the service-role key to the browser.
+
+Important tables and relationships must enforce organization consistency, not merely rely on frontend filtering.
+
+---
+
+# 9. UI/UX DESIGN SYSTEM
+
+Design a premium enterprise-fintech application.
+
+Design inspiration:
+
+- Linear.
+- Ramp.
+- Stripe.
+- Modern procurement management platforms.
+
+Do not copy their interfaces.
+
+Create an original ProcuraPay identity.
+
+## Visual direction
+
+Default theme: LIGHT.
+
+Primary background: #F7F8F6
+
+Primary text: #111827
+
+Secondary text: #64748B
+
+Primary action: #187B61
+
+Success: #16835D
+
+Warning: #D69E36
+
+Error: #D84C4C
+
+Borders: #E5E7EB
+
+Typography:
+
+- Inter Tight for headings.
+- Inter for body.
+- JetBrains Mono for identifiers and code.
+
+Use tabular numerals for financial amounts.
+
+## Design rules
+
+- Professional enterprise layout.
+- Clear visual hierarchy.
+- Consistent spacing.
+- Restrained color.
+- Intentional whitespace.
+- Realistic data visualizations.
+- Precise typography.
+- Subtle borders.
+- Restrained shadows.
+- Consistent iconography.
+- Functional interactions.
+- Responsive design.
+
+Avoid:
+
+- Generic AI gradients.
+- Excessive rounded cards.
+- Repetitive card grids.
+- Unnecessary glassmorphism.
+- Random animations.
+- Huge decorative illustrations.
+- Fake charts.
+- Unnecessary emojis.
+- Inconsistent fonts.
+- Decorative controls without functionality.
+
+Use a coherent design system rather than styling each page independently.
+
+## Required screens
+
+### Public
+
+- Landing page.
+- Product features.
+- How it works.
+- Login.
+- Registration.
+
+### Application
+
+- Overview.
+- Procurement.
+- New purchase request.
+- Request details.
+- AI agent workspace.
+- Product comparison.
+- Proposal details.
+- Approvals.
+- Transactions.
+- Transaction details.
+- Analytics.
+- Policies.
+- Organization settings.
+- Profile settings.
+
+## Sidebar
+
+WORKSPACE
+- Overview
+- Procurement
+- New Request
+
+AI INTELLIGENCE
+- Agent Activity
+- Product Research
+
+FINANCE
+- Approvals
+- Transactions
+- Analytics
+
+CONFIGURATION
+- Policies
+- Settings
+
+## Signature interface: Agent Workspace
+
+Create a sophisticated three-panel workspace.
+
+Left panel:
+- Purchase request.
+- Conversation.
+- Request details.
+
+Center panel:
+- Live agent execution timeline.
+- Tool execution.
+- Research status.
+- Policy evaluation.
+
+Right panel:
+- Product comparison.
+- Recommendation.
+- Price breakdown.
+- Selected offer.
+
+Bottom section:
+- Approval action.
+- Checkout action.
+- Final amount.
+
+Make it the visual centerpiece of the application.
+
+The execution timeline must be connected to actual backend events.
+
+## Required interface states
+
+Every page must support:
+
+- Loading.
+- Empty.
+- Error.
+- Success.
+- Disabled.
+- Permission denied.
+- Data unavailable.
+
+All buttons, links, filters, menus, forms and dialogs must perform their intended action.
+
+---
+
+# 10. API DESIGN
+
+Use versioned REST APIs.
+
+Base:
+
+/api/v1
+
+Authentication:
+
+GET /auth/me
+
+Organizations:
+
+POST /organizations
+GET /organizations/current
+PATCH /organizations/current
+
+Procurement:
+
+POST /procurement/requests
+GET /procurement/requests
+GET /procurement/requests/:id
+POST /procurement/requests/:id/run-agent
+GET /procurement/requests/:id/agent-runs
+
+Products:
+
+GET /products/search
+GET /products/:id
+GET /products/:id/offers
+POST /products/compare
+
+Proposals:
+
+GET /procurement/proposals/:id
+
+Policies:
+
+GET /policies
+POST /policies
+PATCH /policies/:id
+
+Approvals:
+
+GET /approvals
+POST /approvals/:id/approve
+POST /approvals/:id/reject
+
+Payments:
+
+POST /payments/create-order
+POST /payments/capture-order
+GET /payments
+GET /payments/:id
+
+Webhooks:
+
+POST /webhooks/paypal
+
+Analytics:
+
+GET /analytics/overview
+GET /analytics/spending
+GET /analytics/vendors
+
+Audit:
+
+GET /audit-logs
+
+Invoices:
+
+POST /invoices
+GET /invoices
+GET /invoices/:id
+
+Use:
+
+- Zod validation.
+- Standardized JSON responses.
+- Consistent HTTP status codes.
+- Request IDs.
+- Centralized error handling.
+- Pagination.
+- Sorting and filtering.
+- Rate limiting.
+- Organization authorization.
+
+Never trust organization IDs or payment amounts supplied by the browser without server-side validation.
+
+---
+
+# 11. ENVIRONMENT VARIABLES
+
+Frontend:
+
+NEXT_PUBLIC_API_URL=
+NEXT_PUBLIC_SUPABASE_URL=
+NEXT_PUBLIC_SUPABASE_ANON_KEY=
+NEXT_PUBLIC_PAYPAL_CLIENT_ID=
+
+Backend:
+
+NODE_ENV=development
+PORT=5000
+FRONTEND_URL=
+
+SUPABASE_URL=
+SUPABASE_ANON_KEY=
+SUPABASE_SERVICE_ROLE_KEY=
+
+GEMINI_API_KEY=
+GEMINI_MODEL=
+
+PAYPAL_CLIENT_ID=
+PAYPAL_CLIENT_SECRET=
+PAYPAL_BASE_URL=https://api-m.sandbox.paypal.com
+PAYPAL_WEBHOOK_ID=
+
+CHANNEL3_API_KEY=
+
+Never commit secrets.
+
+Create .env.example with blank values.
+
+Validate required environment variables on application startup.
+
+Provide useful errors for missing credentials.
+
+Do not silently substitute fake credentials.
+
+---
+
+# 12. TESTING REQUIREMENTS
+
+Use Vitest for unit tests.
+
+Use Supertest for backend integration tests.
+
+Use Playwright for end-to-end tests.
+
+## Unit tests
+
+- Product scoring.
+- Budget calculation.
+- Policy validation.
+- Currency validation.
+- Approval transitions.
+- Payment state transitions.
+- Idempotency behavior.
+
+## Integration tests
+
+- Supabase JWT verification.
+- Tenant isolation.
+- Procurement request creation.
+- AI structured output.
+- Product search normalization.
+- Proposal creation.
+- Approval.
+- PayPal order creation.
+- PayPal capture.
+- Webhook signature verification.
+
+## End-to-end tests
+
+Test this entire journey:
+
+1. User registers.
+2. User creates organization.
+3. User creates procurement request.
+4. AI parses the request.
+5. Product research executes.
+6. Products are compared.
+7. Recommendation is generated.
+8. Policy validation passes.
+9. Owner approves proposal.
+10. PayPal order is created.
+11. Buyer approves checkout.
+12. Backend captures payment.
+13. Webhook is verified.
+14. Transaction is marked completed.
+15. Audit log is updated.
+
+Also test failure cases:
+
+- Unauthorized request.
+- Cross-tenant access.
+- Invalid budget.
+- Rejected proposal.
+- Expired proposal.
+- Modified proposal.
+- Invalid PayPal order.
+- Duplicate capture.
+- Invalid webhook.
+- Duplicate webhook event.
+- AI provider failure.
+
+Never claim tests passed unless they were actually executed.
+
+---
+
+# 13. DEVELOPMENT PHASES
+
+Implement in the following order.
+
+## PHASE 0 — Repository Inspection and Planning
+
+- Inspect existing repository.
+- Confirm available runtime and package manager.
+- Check existing code.
+- Identify missing dependencies.
+- Establish architecture.
+- Prepare project documentation.
+- Create progress tracker.
+
+Deliverable:
+A clear implementation plan and verified repository structure.
+
+## PHASE 1 — Foundation
+
+- pnpm workspace.
+- Next.js application.
+- Express application.
+- Shared packages.
+- TypeScript configuration.
+- Tailwind and shadcn/ui.
+- Environment validation.
+- Supabase connection.
+- Initial migrations.
+
+Deliverable:
+Frontend and backend running independently.
+
+## PHASE 2 — Authentication and Organizations
+
+- Supabase signup.
+- Login.
+- Logout.
+- Session management.
+- Express JWT verification.
+- Organization creation.
+- Membership.
+- Protected routes.
+- RLS.
+
+Deliverable:
+A user can securely register and create a business.
+
+## PHASE 3 — Procurement
+
+- Procurement request forms.
+- Request listing.
+- Request details.
+- Database persistence.
+- Validation.
+- Status management.
+
+Deliverable:
+A working procurement management system.
+
+## PHASE 4 — AI Agent
+
+- Gemini connection.
+- Structured output.
+- Tool registry.
+- Purchase parsing.
+- Product search.
+- Offer comparison.
+- Deterministic scoring.
+- Policy validation.
+- Proposal generation.
+- Agent execution events.
+
+Deliverable:
+A working AI procurement agent.
+
+## PHASE 5 — Approval and Policy Engine
+
+- Policy CRUD.
+- Budget validation.
+- Proposal approval.
+- Proposal rejection.
+- Immutable snapshots.
+- Audit records.
+
+Deliverable:
+A safe human-controlled approval workflow.
+
+## PHASE 6 — PayPal
+
+- Sandbox configuration.
+- OAuth.
+- Orders API.
+- Checkout SDK.
+- Buyer approval.
+- Capture API.
+- Webhook verification.
+- Payment persistence.
+- Reconciliation.
+
+Deliverable:
+A working end-to-end PayPal Sandbox payment.
+
+## PHASE 7 — Analytics and Final UI
+
+- Dashboard.
+- Spending charts.
+- Transactions.
+- Agent workspace.
+- Comparison table.
+- Approvals.
+- Responsive design.
+- Error states.
+- Loading states.
+
+Deliverable:
+A polished complete application.
+
+## PHASE 8 — Testing and Deployment
+
+- Unit tests.
+- Integration tests.
+- E2E tests.
+- Security review.
+- Supabase deployment.
+- Render deployment.
+- Vercel deployment.
+- Webhook configuration.
+- Final demo preparation.
+
+Deliverable:
+A publicly accessible and demonstrable application.
+
+---
+
+# 14. PROGRESS TRACKER
+
+Maintain a development progress tracker in the repository.
+
+Track:
+
+- Phase.
+- Feature.
+- Status.
+- Files involved.
+- Tests executed.
+- Verification results.
+- Remaining blockers.
+
+Allowed statuses:
+
+NOT_STARTED
+IN_PROGRESS
+BLOCKED
+TESTING
+COMPLETED
+
+Update the tracker after each meaningful implementation milestone.
+
+Do not mark unfinished features as completed.
+
+Keep the tracker concise and accurate.
+
+---
+
+# 15. COMPETITION PRESENTATION
+
+The final application must support a three-minute demonstration.
+
+Demo scenario:
+
+A business owner requests:
+
+"Find two 4K monitors with USB-C under $250 each."
+
+Demonstrate:
+
+1. Creating the request.
+2. AI understanding the requirements.
+3. Real product research.
+4. Product comparison.
+5. Recommendation reasoning.
+6. Budget validation.
+7. Human approval.
+8. PayPal Sandbox checkout.
+9. Verified payment confirmation.
+10. Audit trail.
+
+Prepare:
+
+- Public repository.
+- MIT license.
+- README.
+- Architecture diagram.
+- Database diagram.
+- Environment setup instructions.
+- Demo video.
+- Screenshots.
+- Demo credentials.
+- Sandbox testing instructions.
+
+Do not claim real supplier settlement unless the integration actually supports it.
+
+---
+
+# 16. STRICT ENGINEERING RULES
+
+1. Never generate the entire project as one enormous code dump.
+2. Never ignore the existing repository.
+3. Never skip testing.
+4. Never fabricate integration results.
+5. Never hardcode credentials.
+6. Never expose private API keys.
+7. Never bypass Supabase RLS.
+8. Never trust frontend financial amounts.
+9. Never let AI approve or capture payments.
+10. Never mark a payment successful from a redirect alone.
+11. Never generate fake transaction analytics.
+12. Never leave visible controls disconnected.
+13. Never use unverified vendor information as fact.
+14. Never allow AI to override deterministic policies.
+15. Never claim a feature is complete without verification.
+16. Never create unnecessary microservices.
+17. Never sacrifice the main procurement-to-payment workflow for optional features.
+18. Never silently ignore errors.
+19. Never introduce breaking architecture changes without explaining their necessity.
+20. Never create unnecessary documentation or files outside the agreed project structure.
+
+---
+
+# 17. INITIAL EXECUTION INSTRUCTIONS
+
+Begin immediately.
+
+FIRST:
+
+Inspect the repository and determine its current state.
+
+SECOND:
+
+Create the project foundation and architecture plan.
+
+THIRD:
+
+Implement the monorepo and configure the applications.
+
+FOURTH:
+
+Set up Supabase and create the initial database migrations.
+
+FIFTH:
+
+Implement authentication and organization creation.
+
+SIXTH:
+
+Build the design system and initial dashboard.
+
+Do not attempt all modules simultaneously.
+
+Do not stop after producing a plan.
+
+Start implementation after inspecting the repository.
+
+If external credentials are unavailable, implement the integration structure and request the required credentials without inventing successful API responses.
+
+If the deadline requires prioritization, focus on the complete procurement-to-payment workflow.
+
+At the end of each phase, report:
+
+- What was implemented.
+- Files created or modified.
+- Commands executed.
+- Tests executed.
+- Actual test results.
+- Remaining blockers.
+- Next phase.
+
+Your ultimate goal:
+
+Deliver a secure, polished, fully functional ProcuraPay AI application that demonstrates genuine agentic procurement and human-authorized PayPal payment processing.
+
+BUILD THE PRODUCT. VERIFY THE PRODUCT. DELIVER THE PRODUCT.
