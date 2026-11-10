@@ -86,6 +86,7 @@ export interface PurchaseProposal {
   policyValidation: PolicyValidationResult;
   status: 'PENDING_APPROVAL' | 'APPROVED' | 'REJECTED' | 'EXPIRED';
   version: number;
+  approvedAt?: string;
   createdAt: string;
   expiresAt: string;
 }

@@ -674,7 +674,7 @@ apiRouter.get('/invoices/:transactionId', async (req: Request, res: Response) =>
       paypalOrderId: transaction.paypalOrderId,
       paypalCaptureId: transaction.paypalCaptureId,
       approverEmail: db.organization.ownerEmail,
-      approvedAt: proposal.approvedAt || transaction.createdAt,
+      approvedAt: transaction.createdAt,
       paidAt: transaction.capturedAt || transaction.createdAt,
     });
 

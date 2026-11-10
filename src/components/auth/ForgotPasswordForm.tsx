@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Mail, CheckCircle2, AlertCircle, ArrowLeft } from 'lucide-react';
 import { api } from '../../client/api';
+import { sanitizeErrorMessage } from '../../utils/errorUtils';
 
 interface ForgotPasswordFormProps {
   onNavigateLogin: () => void;
@@ -33,7 +34,7 @@ export const ForgotPasswordForm: React.FC<ForgotPasswordFormProps> = ({
         setResetToken(res.resetToken);
       }
     } catch (err: unknown) {
-      setError(err instanceof Error ? err.message : 'Failed to request password reset.');
+      setError(sanitizeErrorMessage(err, 'Failed to request password reset. Please try again.'));
     } finally {
       setIsLoading(false);
     }

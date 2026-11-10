@@ -33,6 +33,23 @@ async function startServer() {
     });
   });
 
+  // 404 handler for API routes - prevents falling through to Vite SPA HTML middleware
+  app.all('/api/*', (_req, res) => {
+    res.status(404).json({
+      error: 'API endpoint not found.',
+      isVerified: false,
+    });
+  });
+
+  // Global JSON error handler for /api routes
+  app.use('/api', (err: any, _req: express.Request, res: express.Response, _next: express.NextFunction) => {
+    console.error('[API Error]:', err);
+    res.status(err.status || 500).json({
+      error: err.message || 'An internal server error occurred. Please try again shortly.',
+      isVerified: false,
+    });
+  });
+
   // Mount Vite middleware in development
   if (process.env.NODE_ENV !== 'production') {
     const { createServer: createViteServer } = await import('vite');

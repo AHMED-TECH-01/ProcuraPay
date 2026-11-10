@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Mail, CheckCircle2, AlertCircle, ArrowLeft, RefreshCw, KeyRound } from 'lucide-react';
 import { api } from '../../client/api';
 import { UserProfile } from '../../types/auth';
+import { sanitizeErrorMessage } from '../../utils/errorUtils';
 
 import { LogoAnimation } from '../branding/LogoAnimation';
 
@@ -64,7 +65,7 @@ export const VerifyEmailView: React.FC<VerifyEmailViewProps> = ({
         onVerified(res.user);
       }, 1200);
     } catch (err: unknown) {
-      setError(err instanceof Error ? err.message : 'Invalid or expired verification token.');
+      setError(sanitizeErrorMessage(err, 'Invalid or expired verification token.'));
     } finally {
       setIsVerifying(false);
     }
@@ -83,7 +84,7 @@ export const VerifyEmailView: React.FC<VerifyEmailViewProps> = ({
         setTokenInput(res.verificationToken);
       }
     } catch (err: unknown) {
-      setError(err instanceof Error ? err.message : 'Failed to resend verification email.');
+      setError(sanitizeErrorMessage(err, 'Failed to resend verification email. Please try again.'));
     } finally {
       setIsResending(false);
     }

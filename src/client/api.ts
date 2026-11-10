@@ -11,6 +11,8 @@ import {
 
 import { UserProfile, AuthSession } from '../types/auth';
 
+import { sanitizeErrorMessage } from '../utils/errorUtils';
+
 const BASE_URL = '/api/v1';
 
 const TOKEN_KEY = 'procurapay_auth_token';
@@ -47,6 +49,89 @@ const getHeaders = (extraHeaders: Record<string, string> = {}) => {
   return headers;
 };
 
+export class ApiError extends Error {
+  status: number;
+  data: any;
+  isVerified?: boolean;
+  email?: string;
+  code?: string;
+
+  constructor(message: string, status: number, data?: any) {
+    super(message);
+    this.name = 'ApiError';
+    this.status = status;
+    this.data = data;
+    if (data && typeof data === 'object') {
+      this.isVerified = data.isVerified;
+      this.email = data.email;
+      this.code = data.code;
+    }
+  }
+}
+
+/**
+ * Reusable HTTP API response handler.
+ * Safely parses responses, inspects HTTP status, checks Content-Type,
+ * and shields the UI from raw HTML or JSON SyntaxErrors (e.g. "Unexpected token 'T', 'The page c'...").
+ */
+export async function parseResponse<T = any>(
+  res: Response,
+  fallbackMessage = 'Request failed. Please try again.'
+): Promise<T> {
+  const contentType = res.headers.get('content-type') || '';
+  let parsed: any = null;
+
+  if (contentType.includes('application/json')) {
+    try {
+      parsed = await res.json();
+    } catch (jsonErr) {
+      if (typeof window !== 'undefined' && (window as any).__DEV__) {
+        console.warn('[API] JSON parse error:', jsonErr);
+      }
+      parsed = null;
+    }
+  } else {
+    // Non-JSON response (e.g. HTML proxy warmup, 502 Bad Gateway text, plain error)
+    try {
+      const text = await res.text();
+      const trimmed = text.trim();
+      if (trimmed.startsWith('{') || trimmed.startsWith('[')) {
+        parsed = JSON.parse(trimmed);
+      } else if (typeof window !== 'undefined' && (window as any).__DEV__) {
+        console.warn(`[API] Received non-JSON response (${res.status} ${contentType}):`, text.slice(0, 150));
+      }
+    } catch {
+      parsed = null;
+    }
+  }
+
+  if (!res.ok) {
+    let rawError = (parsed && (parsed.error || parsed.message)) || '';
+    if (!rawError) {
+      if (res.status === 404) {
+        rawError = 'The requested endpoint was not found.';
+      } else if (res.status === 401) {
+        rawError = 'Invalid email or password. Please try again.';
+      } else if (res.status === 403) {
+        rawError = parsed?.error || 'Email verification is required before signing in.';
+      } else if (res.status >= 500) {
+        rawError = 'The authentication server is temporarily unavailable. Please try again shortly.';
+      } else {
+        rawError = fallbackMessage;
+      }
+    }
+
+    const cleanError = sanitizeErrorMessage(rawError, fallbackMessage);
+    throw new ApiError(cleanError, res.status, parsed);
+  }
+
+  if (parsed === null) {
+    return {} as T;
+  }
+
+  return parsed as T;
+}
+
 export const api = {
   // Auth
   async register(data: { fullName: string; email: string; password: string; companyName: string }): Promise<{
@@ -58,11 +143,7 @@ export const api = {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(data),
     });
-    if (!res.ok) {
-      const err = await res.json();
-      throw new Error(err.error || 'Registration failed');
-    }
-    return res.json();
+    return parseResponse(res, 'Registration failed. Please try again.');
   },
 
   async verifyEmail(token: string): Promise<{ user: UserProfile }> {
@@ -71,11 +152,7 @@ export const api = {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ token }),
     });
-    if (!res.ok) {
-      const err = await res.json();
-      throw new Error(err.error || 'Email verification failed');
-    }
-    return res.json();
+    return parseResponse(res, 'Email verification failed. Please try again.');
   },
 
   async resendVerification(email: string): Promise<{ message: string; verificationToken?: string }> {
@@ -84,11 +161,7 @@ export const api = {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ email }),
     });
-    if (!res.ok) {
-      const err = await res.json();
-      throw new Error(err.error || 'Resending verification email failed');
-    }
-    return res.json();
+    return parseResponse(res, 'Resending verification email failed. Please try again.');
   },
 
   async login(data: { email: string; password: string }): Promise<{ session: AuthSession; isVerified: boolean }> {
@@ -97,13 +170,10 @@ export const api = {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(data),
     });
-    const result = await res.json();
-    if (!res.ok) {
-      const error: any = new Error(result.error || 'Invalid credentials');
-      error.isVerified = result.isVerified;
-      error.email = result.email;
-      throw error;
-    }
+    const result = await parseResponse<{ session: AuthSession; isVerified: boolean }>(
+      res,
+      'Invalid email or password.'
+    );
     if (result.session?.token) {
       authStorage.setToken(result.session.token);
     }
@@ -116,11 +186,7 @@ export const api = {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ email }),
     });
-    if (!res.ok) {
-      const err = await res.json();
-      throw new Error(err.error || 'Failed to request password reset');
-    }
-    return res.json();
+    return parseResponse(res, 'Failed to request password reset. Please try again.');
   },
 
   async resetPassword(token: string, newPassword: string): Promise<{ message: string }> {
@@ -129,28 +195,34 @@ export const api = {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ token, newPassword }),
     });
-    if (!res.ok) {
-      const err = await res.json();
-      throw new Error(err.error || 'Failed to reset password');
-    }
-    return res.json();
+    return parseResponse(res, 'Failed to reset password. Please try again.');
   },
 
   async logout(): Promise<void> {
     const token = authStorage.getToken();
-    await fetch(`${BASE_URL}/auth/logout`, {
-      method: 'POST',
-      headers: getHeaders(),
-      body: JSON.stringify({ token }),
-    });
+    try {
+      await fetch(`${BASE_URL}/auth/logout`, {
+        method: 'POST',
+        headers: getHeaders(),
+        body: JSON.stringify({ token }),
+      });
+    } catch {}
     authStorage.clearToken();
   },
 
   async getMe(): Promise<{ user: UserProfile; organization: Organization; isAuthenticated: boolean }> {
-    const res = await fetch(`${BASE_URL}/auth/me`, {
-      headers: getHeaders(),
-    });
-    return res.json();
+    try {
+      const res = await fetch(`${BASE_URL}/auth/me`, {
+        headers: getHeaders(),
+      });
+      return await parseResponse(res, 'Session check failed');
+    } catch {
+      return {
+        user: null as any,
+        organization: null as any,
+        isAuthenticated: false,
+      };
+    }
   },
 
   async updateOrganization(data: Partial<Organization>): Promise<{ organization: Organization }> {
@@ -159,19 +231,18 @@ export const api = {
       headers: getHeaders(),
       body: JSON.stringify(data),
     });
-    return res.json();
+    return parseResponse(res, 'Failed to update organization');
   },
 
   // Procurement
   async getRequests(): Promise<{ requests: PurchaseRequest[] }> {
     const res = await fetch(`${BASE_URL}/procurement/requests`);
-    return res.json();
+    return parseResponse(res, 'Failed to fetch purchase requests');
   },
 
   async getRequest(id: string): Promise<{ request: PurchaseRequest; proposal?: PurchaseProposal; agentRun?: AgentRun }> {
     const res = await fetch(`${BASE_URL}/procurement/requests/${id}`);
-    if (!res.ok) throw new Error('Request not found');
-    return res.json();
+    return parseResponse(res, 'Request not found');
   },
 
   async createRequest(data: {
@@ -188,22 +259,14 @@ export const api = {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(data),
     });
-    if (!res.ok) {
-      const err = await res.json();
-      throw new Error(err.error || 'Failed to create request');
-    }
-    return res.json();
+    return parseResponse(res, 'Failed to create request');
   },
 
   async runAgent(requestId: string): Promise<{ agentRun: AgentRun; proposal?: PurchaseProposal }> {
     const res = await fetch(`${BASE_URL}/procurement/requests/${requestId}/run-agent`, {
       method: 'POST',
     });
-    if (!res.ok) {
-      const err = await res.json();
-      throw new Error(err.error || 'Agent execution failed');
-    }
-    return res.json();
+    return parseResponse(res, 'Agent execution failed');
   },
 
   // Proposals & Approvals
@@ -212,18 +275,14 @@ export const api = {
     history: ApprovalRecord[];
   }> {
     const res = await fetch(`${BASE_URL}/approvals`);
-    return res.json();
+    return parseResponse(res, 'Failed to fetch approvals');
   },
 
   async approveProposal(id: string): Promise<{ approval: ApprovalRecord; proposal: PurchaseProposal }> {
     const res = await fetch(`${BASE_URL}/approvals/${id}/approve`, {
       method: 'POST',
     });
-    if (!res.ok) {
-      const err = await res.json();
-      throw new Error(err.error || 'Failed to approve');
-    }
-    return res.json();
+    return parseResponse(res, 'Failed to approve');
   },
 
   async rejectProposal(id: string, reason: string): Promise<{ approval: ApprovalRecord; proposal: PurchaseProposal }> {
@@ -232,17 +291,13 @@ export const api = {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ reason }),
     });
-    if (!res.ok) {
-      const err = await res.json();
-      throw new Error(err.error || 'Failed to reject');
-    }
-    return res.json();
+    return parseResponse(res, 'Failed to reject');
   },
 
   // Policies
   async getPolicy(): Promise<{ policy: SpendingPolicy }> {
     const res = await fetch(`${BASE_URL}/policies`);
-    return res.json();
+    return parseResponse(res, 'Failed to fetch policy');
   },
 
   async updatePolicy(id: string, data: Partial<SpendingPolicy>): Promise<{ policy: SpendingPolicy }> {
@@ -251,7 +306,7 @@ export const api = {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(data),
     });
-    return res.json();
+    return parseResponse(res, 'Failed to update policy');
   },
 
   // Payments
@@ -265,11 +320,7 @@ export const api = {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ proposalId }),
     });
-    if (!res.ok) {
-      const err = await res.json();
-      throw new Error(err.error || 'Failed to create PayPal order');
-    }
-    return res.json();
+    return parseResponse(res, 'Failed to create PayPal order');
   },
 
   async capturePayPalOrder(transactionId: string, paypalOrderId: string): Promise<{ transaction: PaymentTransaction }> {
@@ -278,38 +329,34 @@ export const api = {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ transactionId, paypalOrderId }),
     });
-    if (!res.ok) {
-      const err = await res.json();
-      throw new Error(err.error || 'Failed to capture PayPal order');
-    }
-    return res.json();
+    return parseResponse(res, 'Failed to capture PayPal order');
   },
 
   async getPayments(): Promise<{ payments: PaymentTransaction[] }> {
     const res = await fetch(`${BASE_URL}/payments`);
-    return res.json();
+    return parseResponse(res, 'Failed to fetch payments');
   },
 
   // Analytics & Audit
   async getAnalytics(): Promise<any> {
     const res = await fetch(`${BASE_URL}/analytics/overview`);
-    return res.json();
+    return parseResponse(res, 'Failed to fetch analytics');
   },
 
   async getAuditLogs(): Promise<{ auditLogs: AuditLogEntry[] }> {
     const res = await fetch(`${BASE_URL}/audit-logs`);
-    return res.json();
+    return parseResponse(res, 'Failed to fetch audit logs');
   },
 
   // Integrations & Currency
   async getIntegrationsStatus(): Promise<{ timestamp: string; integrations: any[] }> {
     const res = await fetch(`${BASE_URL}/integrations/status`);
-    return res.json();
+    return parseResponse(res, 'Failed to fetch integrations status');
   },
 
   async getCurrencyRates(base: string = 'USD'): Promise<{ baseCurrency: string; date: string; rates: Record<string, number>; source: string }> {
     const res = await fetch(`${BASE_URL}/currency/rates?base=${encodeURIComponent(base)}`);
-    return res.json();
+    return parseResponse(res, 'Failed to fetch currency rates');
   },
 
   async convertCurrency(amount: number, from: string, to: string): Promise<any> {
@@ -318,11 +365,11 @@ export const api = {
       headers: getHeaders(),
       body: JSON.stringify({ amount, from, to }),
     });
-    return res.json();
+    return parseResponse(res, 'Failed to convert currency');
   },
 
   async getInvoice(transactionId: string): Promise<{ invoice: any }> {
     const res = await fetch(`${BASE_URL}/invoices/${encodeURIComponent(transactionId)}`);
-    return res.json();
+    return parseResponse(res, 'Failed to fetch invoice');
   },
 };

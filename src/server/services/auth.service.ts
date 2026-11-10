@@ -61,6 +61,43 @@ export class AuthService {
       user: sessionUser,
       expiresAt: new Date(Date.now() + 7 * 86400000).toISOString(),
     });
+
+    // Seed requested test account: tast@test.com / 123456
+    const tastEmail = 'tast@test.com';
+    const tastSalt = crypto.randomBytes(16).toString('hex');
+    const tastPasswordHash = crypto.pbkdf2Sync('123456', tastSalt, 1000, 64, 'sha256').toString('hex');
+
+    const tastUser: StoredUser = {
+      id: 'usr-tast-01',
+      fullName: 'Test Auditor',
+      email: tastEmail,
+      passwordHash: tastPasswordHash,
+      salt: tastSalt,
+      companyName: 'ProcuraPay Test Labs',
+      emailVerified: true,
+      role: 'OWNER',
+      organizationId: 'org-techflow-01',
+      createdAt: new Date().toISOString(),
+    };
+    AuthService.users.set(tastEmail.toLowerCase(), tastUser);
+
+    // Also alias test@test.com in case of standard test typo
+    const testEmail = 'test@test.com';
+    const testSalt = crypto.randomBytes(16).toString('hex');
+    const testPasswordHash = crypto.pbkdf2Sync('123456', testSalt, 1000, 64, 'sha256').toString('hex');
+    const aliasUser: StoredUser = {
+      id: 'usr-test-alias',
+      fullName: 'Test Auditor',
+      email: testEmail,
+      passwordHash: testPasswordHash,
+      salt: testSalt,
+      companyName: 'ProcuraPay Test Labs',
+      emailVerified: true,
+      role: 'OWNER',
+      organizationId: 'org-techflow-01',
+      createdAt: new Date().toISOString(),
+    };
+    AuthService.users.set(testEmail.toLowerCase(), aliasUser);
   }
 
   private static hashPassword(password: string, salt: string): string {

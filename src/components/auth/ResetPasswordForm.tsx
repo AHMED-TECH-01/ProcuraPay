@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Eye, EyeOff, AlertCircle, CheckCircle2, ArrowLeft } from 'lucide-react';
 import { api } from '../../client/api';
+import { sanitizeErrorMessage } from '../../utils/errorUtils';
 
 interface ResetPasswordFormProps {
   token: string;
@@ -53,7 +54,7 @@ export const ResetPasswordForm: React.FC<ResetPasswordFormProps> = ({
         onSuccess();
       }, 1500);
     } catch (err: unknown) {
-      setError(err instanceof Error ? err.message : 'Failed to reset password.');
+      setError(sanitizeErrorMessage(err, 'Failed to reset password. Please try again.'));
     } finally {
       setIsLoading(false);
     }

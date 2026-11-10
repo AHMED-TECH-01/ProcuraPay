@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Eye, EyeOff, AlertCircle, CheckCircle2 } from 'lucide-react';
 import { api } from '../../client/api';
+import { sanitizeErrorMessage } from '../../utils/errorUtils';
 
 interface SignupFormProps {
   onSuccess: (email: string, token: string) => void;
@@ -77,7 +78,7 @@ export const SignupForm: React.FC<SignupFormProps> = ({
       });
       onSuccess(res.user.email, res.verificationToken);
     } catch (err: unknown) {
-      setError(err instanceof Error ? err.message : 'Registration failed');
+      setError(sanitizeErrorMessage(err, 'Registration failed. Please check your details and try again.'));
     } finally {
       setIsLoading(false);
     }
